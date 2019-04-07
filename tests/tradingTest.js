@@ -1,26 +1,35 @@
 const assert    = require('assert');
-const {getPrice, getLogo, getNews, getStockInfo}  = require('../app/requests/trading');
-const {debug, error} = require('../app/log/log');
+const {getStockInfo}  = require('../app/requests/trading');
 
-//The latest stock price
-async function priceTest(ticker) {
-    const price = await getPrice(ticker).then(res => console.log(res)).catch(e => console.log(e));
-    //assert.ok( typeof(price) === "number", "priceTest fail: Not a price value")
-}
-
-//A path to the company logo
-async function logoTest(ticker) {
-    const logoUrl   = await getLogo(ticker).then(res => console.log(res)).catch(e => console.log(e));
-//    assert.ok( typeof(logoUrl) === "string", "priceTest fail: Not a url value")
-}
-
-//Link to a latest news article for the company
-async function newsTest(ticker) {
-    const news  = await getNews(ticker).then(res => console.log(res)).catch(e => console.log(e));
-    //assert.ok( typeof(news) === "string", "priceTest fail: Not a url value")
-}
-
+/**
+ * @summary        Test for stock information, it consults the getStockInfo function and applies type and url validation tests
+ * @param {ticker} ticker ticker or comma-separated tickers to be consulted
+ * 
+ */
 async function stockInfoTest(ticker) {
-    const info = await getStockInfo(ticker).then(res => console.log(res)).catch(e => console.log(e));
+    console.log("\x1b[44m", "entering getStockInfo tests...",
+        `testing for ${ticker}`,'\x1b[0m');
+    await getStockInfo(ticker).then(res =>{ 
+        const urlPattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|'+ // domain name
+            '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+            '(\\#[-a-z\\d_]*)?$','i');
+        for (const index in res) {
+            if (res.hasOwnProperty(index)) {
+                const element   = res[index];
+                const symbol    = Object.keys(element)[0];
+                const info      = element[symbol];
+                assert.ok(typeof(info.name)==='string', "test failed. name not of valid type");
+                assert.ok(typeof(info.price)==='number', "test failed. price not of valid type");
+                assert.ok(typeof(info.image)==='string', "test failed. name not of valid type");
+                assert.ok(info.image.match(urlPattern), "test failed. image not an url");
+                assert.ok(typeof(info.news)==='string', "test failed. news not of valid type");
+                assert.ok(info.news.match(urlPattern), "test failed. news not an url");
+            }
+        }
+        console.log("\x1b[44m","getStockInfo - Tests passed!",'\x1b[0m');
+    }).catch(e => console.log(e));
 }
-module.exports = {priceTest, logoTest, newsTest, stockInfoTest};
+module.exports = {stockInfoTest};

@@ -1,15 +1,11 @@
-const {priceTest, logoTest, newsTest, stockInfoTest} = require('./tradingTest');
+const {stockInfoTest} = require('./tradingTest');
 const {debugTest, errorTest}    = require('./logTest');
-/*
-priceTest('aapl')
 
-logoTest('aapl')
-
-newsTest('aapl')
-
+//  test for one stock ticker
 stockInfoTest('aapl')
-*/
-
-debugTest('server running on port 3000...')
-
-errorTest("Error: EACCES: permission denied, open '/server.log'")
+//  test for many stock tickers
+stockInfoTest('aapl,googl,fb')
+//  debug console test
+debugTest('debugTest runnung...')
+//  error console test
+errorTest("test message, open '/server.log'")
