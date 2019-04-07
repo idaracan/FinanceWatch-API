@@ -1,0 +1,16 @@
+{
+  "name": "ideaware",
+  "version": "1.0.0",
+  "description": "Stock ticker symbol lookup. Test for ideaware",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ideaware",
+    "financewatch",
+    "test"
+  ],
+  "author": "iramirez",
+  "license": "ISC"
+}
