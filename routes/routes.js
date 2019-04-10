@@ -18,7 +18,6 @@ async function routes(req, res) {
         res.writeHead(404, {'content-type': 'application-json'});
         log.error(`routes/routes: routes() - error 404: Not Found`);
         return res.end(JSON.stringify({'error': 'route not found'}))
-            break;
     }
 }
 

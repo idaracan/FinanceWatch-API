@@ -12,5 +12,8 @@
     "test"
   ],
   "author": "iramirez",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^5.16.0"
+  }
 }
